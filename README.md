@@ -67,7 +67,7 @@ Radar pulse deinterleaving 的目标是将混叠的脉冲流按照不同雷达�
 雷达脉冲分选，也称为 **radar signal sorting**，是指在复杂电磁环境中，将来自多个雷达辐射源的混叠脉冲序列划分到各自对应的辐射源。
 
 <p align="center">
-  <img src="assets\figures\fig1.png" width="90%">
+  <img src="./asset\figures\fig1.png" width="90%">
 </p>
 
 <p align="center">
