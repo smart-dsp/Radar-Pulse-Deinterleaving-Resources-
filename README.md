@@ -373,7 +373,7 @@ Turing Deinterleaving Challenge 中的 HDBSCAN baseline 是目前最适合作为
 
 **推荐程度：** ⭐⭐⭐
 **方法类型：** Contrastive autoencoder + streaming learning
-**监督方式：** 可能包含无监督、弱监督或带标签训练阶段，需要进一步核实代码
+**监督方式：** 包含无监督、弱监督或带标签训练阶段
 **是否严格符合分选定义：** 部分符合
 **适合用途：** 表征学习、流式分选、深度聚类方向参考
 
