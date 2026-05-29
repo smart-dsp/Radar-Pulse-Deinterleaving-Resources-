@@ -41,14 +41,12 @@ Radar pulse deinterleaving 的目标是将混叠的脉冲流按照不同雷达�
   * [2.5 哪些方法符合严格分选定义？](#25-哪些方法符合严格分选定义)
 * [3. 数据集资源 / Datasets](#3-数据集资源--datasets)
 
-  * [3.1 数据集推荐等级说明](#31-数据集推荐等级说明)
-  * [3.2 数据集总览](#32-数据集总览)
-  * [3.3 重点数据集说明](#33-重点数据集说明)
+  * [3.1 数据集总览](#32-数据集总览)
+  * [3.2 重点数据集说明](#33-重点数据集说明)
 * [4. 开源方法与实现 / Methods and Implementations](#4-开源方法与实现--methods-and-implementations)
 
-  * [4.1 方法推荐等级说明](#41-方法推荐等级说明)
-  * [4.2 方法与代码总览](#42-方法与代码总览)
-  * [4.3 重点方法说明](#43-重点方法说明)
+  * [4.1 方法与代码总览](#42-方法与代码总览)
+  * [4.2 重点方法说明](#43-重点方法说明)
 * [5. 推荐实验设置 / Recommended Experimental Setup](#5-推荐实验设置--recommended-experimental-setup)
 
   * [5.1 主 benchmark](#51-主-benchmark)
@@ -236,19 +234,9 @@ C = {C1, C2, ..., CK}
 
 ---
 
-### 3.1 数据集推荐等级说明
 
-| 推荐程度  | 含义                          |
-| ----- | --------------------------- |
-| ⭐⭐⭐⭐⭐ | 强烈推荐，适合作为主 benchmark 或核心数据集 |
-| ⭐⭐⭐⭐  | 推荐，适合复现、对比实验或方法验证           |
-| ⭐⭐⭐   | 可参考，但数据说明、规模或任务设定存在一定限制     |
-| ⭐⭐    | 相关任务数据，或更适合教学 / demo / 辅助参考 |
-| ⭐     | 仅作补充说明，不建议作为主要实验数据          |
 
----
-
-### 3.2 数据集总览
+### 3.1 数据集总览
 
 | Dataset 数据集                                | Task Fit 任务匹配度           | Data Type 数据类型                     | Labels 标签                     | Open Source? 是否开源 | Recommendation 推荐度 | Links 链接                                                                                                                                                                             | Notes 备注                     |
 | ------------------------------------------ | ------------------------ | ---------------------------------- | ----------------------------- | ----------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------- |
@@ -263,9 +251,9 @@ C = {C1, C2, ..., CK}
 
 ---
 
-### 3.3 重点数据集说明
+### 3.2 重点数据集说明
 
-#### 3.3.1 Turing Synthetic Radar Dataset / TSRD
+#### 3.2.1 Turing Synthetic Radar Dataset / TSRD
 
 **推荐程度：** ⭐⭐⭐⭐⭐
 **适合用途：** 标准 benchmark、无监督聚类 baseline、深度表征学习、监督 / 半监督方法评估
@@ -281,7 +269,7 @@ TSRD 是目前最适合作为雷达脉冲分选主 benchmark 的公开数据集�
 
 ---
 
-#### 3.3.2 radar_data_Kmeans data
+#### 3.2.2 radar_data_Kmeans data
 
 **推荐程度：** ⭐⭐⭐
 **适合用途：** K-means 分选入门、工程实现参考、嵌入式部署参考
@@ -296,7 +284,7 @@ TSRD 是目前最适合作为雷达脉冲分选主 benchmark 的公开数据集�
 
 ---
 
-#### 3.3.3 Stream-ConAEnet data
+#### 3.2.3 Stream-ConAEnet data
 
 **推荐程度：** ⭐⭐⭐
 **适合用途：** 对比自编码器、表征学习、流式分选实验
@@ -309,7 +297,7 @@ TSRD 是目前最适合作为雷达脉冲分选主 benchmark 的公开数据集�
 
 ---
 
-#### 3.3.4 2nd-EBDSC data
+#### 3.2.4 2nd-EBDSC data
 
 **推荐程度：** ⭐⭐⭐
 **适合用途：** 竞赛式混叠信号提取、监督序列标注、模板辅助任务
@@ -330,19 +318,8 @@ TSRD 是目前最适合作为雷达脉冲分选主 benchmark 的公开数据集�
 
 ---
 
-### 4.1 方法推荐等级说明
 
-| 推荐程度  | 含义                          |
-| ----- | --------------------------- |
-| ⭐⭐⭐⭐⭐ | 强烈推荐，适合作为主 baseline 或主要复现对象 |
-| ⭐⭐⭐⭐  | 推荐，方法有代表性，适合对比或扩展           |
-| ⭐⭐⭐   | 可参考，但任务设定、数据说明或复现难度存在限制     |
-| ⭐⭐    | 相关任务或教学 demo，适合作为辅助参考       |
-| ⭐     | 仅作补充，不建议作为主要方法              |
-
----
-
-### 4.2 方法与代码总览
+### 4.1 方法与代码总览
 
 | Project / Method 项目或方法                  | Method Type 方法类型                               | Supervision 监督方式 | Strictly Unsupervised? 是否严格无监督 | Recommendation 推荐度 | Links 链接                                                                                 | Notes 备注                         |
 | --------------------------------------- | ---------------------------------------------- | ---------------- | ------------------------------ | ------------------ | ---------------------------------------------------------------------------------------- | -------------------------------- |
@@ -358,9 +335,9 @@ TSRD 是目前最适合作为雷达脉冲分选主 benchmark 的公开数据集�
 
 ---
 
-### 4.3 重点方法说明
+### 4.2 重点方法说明
 
-#### 4.3.1 Turing HDBSCAN baseline
+#### 4.2.1 Turing HDBSCAN baseline
 
 **推荐程度：** ⭐⭐⭐⭐⭐
 **方法类型：** HDBSCAN on raw PDW features
@@ -376,7 +353,7 @@ Turing Deinterleaving Challenge 中的 HDBSCAN baseline 是目前最适合作为
 
 ---
 
-#### 4.3.2 radar_data_Kmeans
+#### 4.2.2 radar_data_Kmeans
 
 **推荐程度：** ⭐⭐⭐⭐
 **方法类型：** K-means clustering
@@ -392,7 +369,7 @@ Turing Deinterleaving Challenge 中的 HDBSCAN baseline 是目前最适合作为
 
 ---
 
-#### 4.3.3 Stream-ConAEnet
+#### 4.2.3 Stream-ConAEnet
 
 **推荐程度：** ⭐⭐⭐
 **方法类型：** Contrastive autoencoder + streaming learning
@@ -408,7 +385,7 @@ Turing Deinterleaving Challenge 中的 HDBSCAN baseline 是目前最适合作为
 
 ---
 
-#### 4.3.4 HMC-RFN
+#### 4.2.4 HMC-RFN
 
 **推荐程度：** ⭐⭐⭐
 **方法类型：** PRI-based temporal modeling
@@ -422,7 +399,7 @@ HMC-RFN 使用 Hidden Markov Chains 和 Residual Fence Networks 来建模雷达�
 
 ---
 
-#### 4.3.5 2nd-EBDSC solution
+#### 4.2.5 2nd-EBDSC solution
 
 **推荐程度：** ⭐⭐⭐
 **方法类型：** Wide-value embeddings + TCN + masking
@@ -438,7 +415,7 @@ HMC-RFN 使用 Hidden Markov Chains 和 Residual Fence Networks 来建模雷达�
 
 ---
 
-#### 4.3.6 EW Signal Intelligence Deinterleaving Demo
+#### 4.2.6 EW Signal Intelligence Deinterleaving Demo
 
 **推荐程度：** ⭐⭐
 **方法类型：** PRI-based / feature-based grouping
@@ -452,7 +429,7 @@ HMC-RFN 使用 Hidden Markov Chains 和 Residual Fence Networks 来建模雷达�
 
 ---
 
-#### 4.3.7 RadSeg
+#### 4.2.7 RadSeg
 
 **推荐程度：** ⭐⭐
 **方法类型：** Radar activity segmentation
