@@ -41,14 +41,12 @@ Open-source resources for radar pulse deinterleaving are still relatively scatte
   * [2.5 Which methods match the strict definition?](#25-which-methods-match-the-strict-definition)
 * [3. Datasets](#3-datasets)
 
-  * [3.1 Dataset recommendation levels](#31-dataset-recommendation-levels)
-  * [3.2 Dataset summary](#32-dataset-summary)
-  * [3.3 Key dataset notes](#33-key-dataset-notes)
+  * [3.1 Dataset summary](#32-dataset-summary)
+  * [3.2 Key dataset notes](#33-key-dataset-notes)
 * [4. Methods and Implementations](#4-methods-and-implementations)
 
-  * [4.1 Method recommendation levels](#41-method-recommendation-levels)
-  * [4.2 Method and code summary](#42-method-and-code-summary)
-  * [4.3 Key method notes](#43-key-method-notes)
+  * [4.1 Method and code summary](#42-method-and-code-summary)
+  * [4.2 Key method notes](#43-key-method-notes)
 * [5. Recommended Experimental Setup](#5-recommended-experimental-setup)
 
   * [5.1 Primary benchmark](#51-primary-benchmark)
@@ -236,19 +234,8 @@ This section summarizes datasets, simulation data, and related-task data for rad
 
 ---
 
-### 3.1 Dataset recommendation levels
 
-| Recommendation | Meaning                                                                      |
-| -------------- | ---------------------------------------------------------------------------- |
-| ⭐⭐⭐⭐⭐          | Strongly recommended; suitable as a primary benchmark or core dataset        |
-| ⭐⭐⭐⭐           | Recommended; suitable for reproduction, comparison, or method validation     |
-| ⭐⭐⭐            | Useful reference, but limited by documentation, scale, or task setting       |
-| ⭐⭐             | Related-task data or more suitable for teaching / demo / auxiliary reference |
-| ⭐              | Supplementary only; not recommended as a main experimental dataset           |
-
----
-
-### 3.2 Dataset summary
+### 3.1 Dataset summary
 
 | Dataset                                    | Task Fit                                      | Data Type                                       | Labels                                                 | Open Source?               | Recommendation | Links                                                                                                                                                                                | Notes                                                                                                          |
 | ------------------------------------------ | --------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------ | -------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
@@ -263,9 +250,9 @@ This section summarizes datasets, simulation data, and related-task data for rad
 
 ---
 
-### 3.3 Key dataset notes
+### 3.2 Key dataset notes
 
-#### 3.3.1 Turing Synthetic Radar Dataset / TSRD
+#### 3.2.1 Turing Synthetic Radar Dataset / TSRD
 
 **Recommendation:** ⭐⭐⭐⭐⭐
 **Suitable for:** standard benchmark, unsupervised clustering baselines, deep representation learning, supervised / semi-supervised evaluation
@@ -281,7 +268,7 @@ Maintainer note: If the goal is to study **unsupervised radar pulse deinterleavi
 
 ---
 
-#### 3.3.2 radar_data_Kmeans data
+#### 3.2.2 radar_data_Kmeans data
 
 **Recommendation:** ⭐⭐⭐
 **Suitable for:** K-means deinterleaving introduction, engineering reference, embedded deployment reference
@@ -296,7 +283,7 @@ Maintainer note: Suitable as supplementary experimental or engineering reference
 
 ---
 
-#### 3.3.3 Stream-ConAEnet data
+#### 3.2.3 Stream-ConAEnet data
 
 **Recommendation:** ⭐⭐⭐
 **Suitable for:** contrastive autoencoder, representation learning, streaming deinterleaving experiments
@@ -309,7 +296,7 @@ This data is more suitable for studying deep representation learning combined wi
 
 ---
 
-#### 3.3.4 2nd-EBDSC data
+#### 3.2.4 2nd-EBDSC data
 
 **Recommendation:** ⭐⭐⭐
 **Suitable for:** competition-style interleaved signal extraction, supervised sequence labeling, template-assisted tasks
@@ -330,19 +317,9 @@ This section summarizes open-source methods, code implementations, and reproduci
 
 ---
 
-### 4.1 Method recommendation levels
 
-| Recommendation | Meaning                                                                               |
-| -------------- | ------------------------------------------------------------------------------------- |
-| ⭐⭐⭐⭐⭐          | Strongly recommended; suitable as a main baseline or primary reproduction target      |
-| ⭐⭐⭐⭐           | Recommended; representative and suitable for comparison or extension                  |
-| ⭐⭐⭐            | Useful reference, but limited by task setting, data documentation, or reproducibility |
-| ⭐⭐             | Related task or teaching demo; suitable as auxiliary reference                        |
-| ⭐              | Supplementary only; not recommended as a main method                                  |
 
----
-
-### 4.2 Method and code summary
+### 4.1 Method and code summary
 
 | Project / Method                        | Method Type                                    | Supervision                                                 | Strictly Unsupervised? | Recommendation | Links                                                                                    | Notes                                                                    |
 | --------------------------------------- | ---------------------------------------------- | ----------------------------------------------------------- | ---------------------- | -------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
@@ -358,9 +335,9 @@ This section summarizes open-source methods, code implementations, and reproduci
 
 ---
 
-### 4.3 Key method notes
+### 4.2 Key method notes
 
-#### 4.3.1 Turing HDBSCAN baseline
+#### 4.2.1 Turing HDBSCAN baseline
 
 **Recommendation:** ⭐⭐⭐⭐⭐
 **Method type:** HDBSCAN on raw PDW features
@@ -376,7 +353,7 @@ Maintainer note: To build an unsupervised deinterleaving experimental framework,
 
 ---
 
-#### 4.3.2 radar_data_Kmeans
+#### 4.2.2 radar_data_Kmeans
 
 **Recommendation:** ⭐⭐⭐⭐
 **Method type:** K-means clustering
@@ -392,7 +369,7 @@ Maintainer note: Suitable for understanding the basic workflow of clustering-bas
 
 ---
 
-#### 4.3.3 Stream-ConAEnet
+#### 4.2.3 Stream-ConAEnet
 
 **Recommendation:** ⭐⭐⭐
 **Method type:** contrastive autoencoder + streaming learning
@@ -408,7 +385,7 @@ Maintainer note: This project is valuable as a reference, but its data documenta
 
 ---
 
-#### 4.3.4 HMC-RFN
+#### 4.2.4 HMC-RFN
 
 **Recommendation:** ⭐⭐⭐
 **Method type:** PRI-based temporal modeling
@@ -422,7 +399,7 @@ HMC-RFN uses Hidden Markov Chains and Residual Fence Networks to model temporal 
 
 ---
 
-#### 4.3.5 2nd-EBDSC solution
+#### 4.2.5 2nd-EBDSC solution
 
 **Recommendation:** ⭐⭐⭐
 **Method type:** wide-value embeddings + TCN + masking
@@ -438,7 +415,7 @@ Maintainer note: It is useful as an engineering and deep sequence modeling refer
 
 ---
 
-#### 4.3.6 EW Signal Intelligence Deinterleaving Demo
+#### 4.2.6 EW Signal Intelligence Deinterleaving Demo
 
 **Recommendation:** ⭐⭐
 **Method type:** PRI-based / feature-based grouping
@@ -452,7 +429,7 @@ This project provides a simple Python demo for understanding the basic deinterle
 
 ---
 
-#### 4.3.7 RadSeg
+#### 4.2.7 RadSeg
 
 **Recommendation:** ⭐⭐
 **Method type:** radar activity segmentation
