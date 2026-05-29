@@ -67,7 +67,7 @@ Open-source resources for radar pulse deinterleaving are still relatively scatte
 Radar pulse deinterleaving, also known as **radar signal sorting**, is the task of assigning pulses from a mixed electromagnetic environment to their corresponding radar emitters.
 
 <p align="center">
-  <img src="./fig1.png" width="90%">
+  <img src="asset\figures\fig1.png" width="90%">
 </p>
 
 <p align="center">
