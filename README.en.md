@@ -531,17 +531,32 @@ Evaluation using V-measure / ARI / AMI / pairwise F1
 
 ---
 
+
+## 英文版替换为
+
+```md
 ## 8. Citation and Contribution
 
-If you use this resource list, please cite the original papers, datasets, and code repositories whenever possible.
+This resource list is organized and maintained by the **SMARTDSP Lab, School of Informatics, Xiamen University**. It aims to collect public datasets, open-source implementations, representative methods, and reproducible resources related to **Radar Pulse Deinterleaving / Radar Signal Sorting**.
 
-Contributions are welcome, including:
+If this repository is useful for your study, research, or project development, you are welcome to cite this repository in your papers, reports, or project documents. Please also cite the original papers, datasets, and code repositories whenever applicable.
 
-* newly released radar pulse deinterleaving datasets;
-* open-source implementations of PRI-based, clustering-based, or deep learning-based deinterleaving methods;
-* reproducible benchmark results;
-* corrections to dataset availability information;
-* notes on whether a method is strictly unsupervised.
+### Maintenance Notes
+
+- This repository mainly focuses on radar pulse deinterleaving, PDW deinterleaving, radar signal sorting, and closely related tasks.
+- We try to annotate each resource with its task type, data availability, supervision setting, and whether it matches the strict definition of unsupervised radar pulse deinterleaving.
+- Since some open-source projects may have incomplete documentation, unclear licenses, or limited reproducibility information, the notes and recommendation levels may be updated over time.
+- The recommendation levels in this repository reflect the maintainers’ assessment based on task relevance, openness, reproducibility, and documentation quality.
+
+### Contribution
+
+Contributions are welcome through Issues or Pull Requests, including but not limited to:
+
+- newly released radar pulse deinterleaving datasets;
+- open-source implementations of PRI-based, clustering-based, or deep learning-based deinterleaving methods;
+- reproducible benchmark results;
+- corrections to dataset availability, broken links, or license information;
+- notes on whether a method is strictly unsupervised.
 
 When submitting a new resource, please include the following information if possible:
 
@@ -556,4 +571,3 @@ Labels available:
 Strictly unsupervised:
 Reason for recommendation:
 Notes:
-```
