@@ -534,15 +534,26 @@ Evaluation using V-measure / ARI / AMI / pairwise F1
 
 ## 8. 引用与贡献 / Citation and Contribution
 
-如果使用本资源列表，请尽量引用原始论文、数据集和代码仓库。
+本资源列表由 **厦门大学信息学院 SMARTDSP 实验室** 整理与维护，旨在汇总雷达脉冲分选（Radar Pulse Deinterleaving / Radar Signal Sorting）相关的公开数据集、开源代码、代表性方法和可复现实验资源。
 
-欢迎贡献以下内容：
+如果本仓库对你的学习、研究或项目开发有帮助，欢迎在论文、报告或项目文档中引用本仓库，并请同时引用相关方法、数据集和代码仓库的原始论文或项目页面。
 
-* 新发布的雷达脉冲分选数据集；
-* PRI-based、clustering-based 或 deep learning-based 分选方法的开源实现；
-* 可复现的 benchmark 结果；
-* 对数据集可用性信息的修正；
-* 关于某个方法是否严格无监督的补充说明。
+### 维护说明
+
+- 本仓库主要关注雷达脉冲分选、PDW deinterleaving、radar signal sorting 及其相关任务；
+- 资源整理过程中会尽量标注任务类型、数据可用性、监督方式和是否符合严格无监督分选定义；
+- 由于部分开源项目的数据说明、许可证、复现流程可能不完整，相关判断会随着项目更新持续修正；
+- 本仓库中的推荐程度仅代表整理者基于任务匹配度、开源程度、复现价值和数据说明完整度给出的参考意见。
+
+### 贡献方式
+
+欢迎通过 Issue 或 Pull Request 补充和修正资源，包括但不限于：
+
+- 新发布的雷达脉冲分选数据集；
+- PRI-based、clustering-based 或 deep learning-based 分选方法的开源实现；
+- 可复现的 benchmark 结果；
+- 数据集可用性、链接失效或许可证信息的修正；
+- 关于某个方法是否严格无监督的补充说明。
 
 建议提交资源时尽量包含以下信息：
 
@@ -557,6 +568,4 @@ Evaluation using V-measure / ARI / AMI / pairwise F1
 是否严格无监督：
 推荐理由：
 备注：
-```
 
-::: 
