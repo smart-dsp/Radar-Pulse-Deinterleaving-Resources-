@@ -5,67 +5,58 @@
   <a href="./README.en.md">English</a>
 </p>
 
-本仓库持续整理 **Radar Pulse Deinterleaving / Radar Signal Sorting（雷达脉冲分选 / 雷达信号分选）** 相关的开源资源，重点关注任务定义、PDW 数据集、开源实现、代表性方法、评价指标和可复现实验。
+本仓库由 **厦门大学信息学院 SmartDSP 实验室** 整理，汇总 **雷达脉冲分选 / 雷达信号分选（Radar Pulse Deinterleaving / Radar Signal Sorting）** 相关的高价值公开资源，重点关注任务定义、PDW 数据集、可复现实验框架、代表性方法和评价指标。
 
-Radar pulse deinterleaving 的目标是将混叠的脉冲流按照不同雷达辐射源进行划分。在典型的 **PDW（Pulse Description Word，脉冲描述字）** 场景中，每个脉冲通常由 **TOA（Time of Arrival，到达时间）**、**PRI（Pulse Repetition Interval，脉冲重复间隔）**、**RF/CF（Radio Frequency / Carrier Frequency，射频/载频）**、**PW（Pulse Width，脉宽）**、**PA（Pulse Amplitude，脉冲幅度）** 以及 **DOA/AOA（Direction / Angle of Arrival，到达方向/到达角）** 等参数描述。
+本资源列表优先保留与雷达脉冲分选任务高度相关、具有明确任务定义、公开数据或代码、论文支撑或较强复现价值的资源。对于仅名称相关、文档不足、复现价值有限或不适合作为正式研究资源的项目，不纳入正文推荐。
 
-目前雷达脉冲分选相关资源比较分散，不同项目对 `deinterleaving`、`sorting`、`clustering`、`sequence labeling` 等概念的使用并不完全一致。因此，本仓库尝试对相关资源进行人工整理，并标注其任务类型、数据可用性、监督方式以及是否符合严格的无监督分选定义。
-
----
-
-## Highlights / 快速结论
-
-* **标准 benchmark 首选：** [Turing Deinterleaving Challenge](https://github.com/alan-turing-institute/turing-deinterleaving-challenge) 及其 [Turing Synthetic Radar Dataset](https://huggingface.co/datasets/alan-turing-institute/turing-synthetic-radar-dataset)。
-* **严格无监督分选方法：** K-means、GMM、DBSCAN、HDBSCAN、hierarchical clustering 等最符合“将混叠脉冲划分为不同辐射源簇”的定义。
-* **深度学习方法需谨慎区分：** 很多 neural deinterleaving 方法虽然完成的是分选任务，但训练阶段使用了标签，因此不属于严格无监督聚类。
-* **数据集现状：** 公开可用的真实雷达分选数据非常有限，当前开源研究主要依赖合成 PDW 数据。
-* **本仓库定位：** 本项目不是简单罗列链接，而是尽量区分每个资源的任务类型、监督方式、数据可用性以及是否符合严格雷达脉冲分选定义。
-
-> 注：本仓库中的 ⭐ 推荐程度是整理者基于任务匹配度、开源程度、复现价值和数据说明完整度给出的主观推荐，不代表 GitHub stars。
+雷达脉冲分选的目标是将混叠的脉冲流按照不同雷达辐射源进行划分。在典型的 **PDW（Pulse Description Word，脉冲描述字）** 场景中，每个脉冲通常由 **TOA（Time of Arrival，到达时间）**、**PRI（Pulse Repetition Interval，脉冲重复间隔）**、**RF/CF（Radio Frequency / Carrier Frequency，射频/载频）**、**PW（Pulse Width，脉宽）**、**PA（Pulse Amplitude，脉冲幅度）** 以及 **DOA/AOA（Direction / Angle of Arrival，到达方向 / 到达角）** 等参数描述。
 
 ---
 
-## 目录 / Table of Contents
+## 快速结论
 
-* [1. 任务概述 / Overview](#1-任务概述--overview)
+* **首选基准：** [Turing Deinterleaving Challenge](https://github.com/alan-turing-institute/turing-deinterleaving-challenge) 与 [Turing Synthetic Radar Dataset / TSRD](https://huggingface.co/datasets/alan-turing-institute/turing-synthetic-radar-dataset)。
+* **首选基线：** Turing Challenge 中提供的 HDBSCAN 基线，可作为严格无监督雷达脉冲分选方法的起点。
+* **严格无监督分选：** DBSCAN、HDBSCAN、层次聚类、K-means、GMM 等传统聚类方法最符合“未知辐射源数量下的辐射源聚类”定义。
+* **深度学习方法：** Transformer 度量学习、深度对比聚类、语义分割、图卷积网络等方法具有研究价值，但多数依赖标签训练，更适合作为代表性方法或性能上限参考。
+* **公开数据现状：** 真实雷达 PDW / IQ 分选数据公开较少，目前可复现实验主要依赖合成 PDW 数据。
 
+---
+
+## 目录
+
+* [1. 任务概述](#1-任务概述)
   * [1.1 什么是雷达脉冲分选？](#11-什么是雷达脉冲分选)
   * [1.2 常见输入特征](#12-常见输入特征)
   * [1.3 常见评价指标](#13-常见评价指标)
-* [2. 方法分类与严格定义 / Method Taxonomy and Task Fit](#2-方法分类与严格定义--method-taxonomy-and-task-fit)
-
-  * [2.1 传统 PRI-based 方法](#21-传统-pri-based-方法)
-  * [2.2 无监督聚类方法](#22-无监督聚类方法)
-  * [2.3 表征学习 + 聚类方法](#23-表征学习--聚类方法)
-  * [2.4 监督序列标注与分割方法](#24-监督序列标注与分割方法)
-  * [2.5 哪些方法符合严格分选定义？](#25-哪些方法符合严格分选定义)
-* [3. 数据集资源 / Datasets](#3-数据集资源--datasets)
-
-  * [3.1 数据集总览](#32-数据集总览)
-  * [3.2 重点数据集说明](#33-重点数据集说明)
-* [4. 开源方法与实现 / Methods and Implementations](#4-开源方法与实现--methods-and-implementations)
-
-  * [4.1 方法与代码总览](#42-方法与代码总览)
-  * [4.2 重点方法说明](#43-重点方法说明)
-* [5. 推荐实验设置 / Recommended Experimental Setup](#5-推荐实验设置--recommended-experimental-setup)
-
-  * [5.1 主 benchmark](#51-主-benchmark)
-  * [5.2 基线方法](#52-基线方法)
+* [2. 方法分类与任务边界](#2-方法分类与任务边界)
+  * [2.1 方法类型总览](#21-方法类型总览)
+  * [2.2 方法与严格无监督分选的关系](#22-方法与严格无监督分选的关系)
+* [3. 数据集与基准](#3-数据集与基准)
+  * [3.1 数据集总览](#31-数据集总览)
+  * [3.2 Turing Synthetic Radar Dataset / TSRD](#32-turing-synthetic-radar-dataset--tsrd)
+  * [3.3 RadSeg](#33-radseg)
+* [4. 代表性方法与论文](#4-代表性方法与论文)
+  * [4.1 论文总览](#41-论文总览)
+  * [4.2 方法简介](#42-方法简介)
+* [5. 推荐实验设置](#5-推荐实验设置)
+  * [5.1 主基准](#51-主基准)
+  * [5.2 建议基线](#52-建议基线)
   * [5.3 建议流程](#53-建议流程)
-* [6. 推荐阅读与入门资源 / Recommended Reading and Starting Points](#6-推荐阅读与入门资源--recommended-reading-and-starting-points)
-* [7. 说明 / Notes](#7-说明--notes)
-* [8. 引用与贡献 / Citation and Contribution](#8-引用与贡献--citation-and-contribution)
+* [6. 非核心资源说明](#6-非核心资源说明)
+* [7. 说明](#7-说明)
+* [8. 引用与贡献](#8-引用与贡献)
 
 ---
 
-## 1. 任务概述 / Overview
+## 1. 任务概述
 
 ### 1.1 什么是雷达脉冲分选？
 
-雷达脉冲分选，也称为 **radar signal sorting**，是指在复杂电磁环境中，将来自多个雷达辐射源的混叠脉冲序列划分到各自对应的辐射源。
+雷达脉冲分选，也称为 **雷达脉冲解交织（radar pulse deinterleaving）** 或 **雷达信号分选（radar signal sorting）**，是指在复杂电磁环境中，将来自多个雷达辐射源的混叠脉冲序列划分到各自对应的辐射源。
 
 <p align="center">
-  <img src="./asset\figures\fig1.png" width="90%">
+  <img src="./assets/figures/fig1.png" width="90%">
 </p>
 
 <p align="center">
@@ -90,476 +81,349 @@ pi = [TOA, RF/CF, PW, PA, DOA/AOA, ...]
 C = {C1, C2, ..., CK}
 ```
 
-其中每个簇 `Ck` 对应一个雷达辐射源 emitter。
+其中每个簇 `Ck` 对应一个雷达辐射源。
 
-从最严格的意义上讲，雷达脉冲分选可以看作一个 **无监督聚类问题（unsupervised clustering problem）**，原因包括：
+从严格意义上讲，雷达脉冲分选可以看作一个 **无监督聚类问题**：
 
-* 辐射源数量通常是未知的；
+* 辐射源数量通常未知；
 * 辐射源身份不是固定类别；
-* 同一辐射源产生的脉冲应该被分到同一类；
-* 不同辐射源产生的脉冲应该被分开。
+* 同一辐射源产生的脉冲应被分到同一类；
+* 不同辐射源产生的脉冲应被分开。
 
-不过，许多现代方法会将该任务建模为监督学习、半监督学习、度量学习、序列标注、语义分割或实例分割问题。这些方法虽然也可以完成脉冲分选任务，但并不一定属于纯粹的无监督聚类方法。
+同时，许多现代方法也会将该任务建模为监督学习、半监督学习、度量学习、序列标注或语义分割问题。这些方法可以完成分选式输出，但不一定属于严格的无监督聚类式分选方法。
 
 ---
 
 ### 1.2 常见输入特征
 
-| Feature 特征 | Meaning 含义                                                   | Usage 用途               |
-| ---------- | ------------------------------------------------------------ | ---------------------- |
-| TOA        | Time of Arrival，到达时间                                         | 用于计算 PRI 和分析时间规律       |
-| PRI / DTOA | Pulse Repetition Interval / Difference of TOA，脉冲重复间隔 / 到达时间差 | 传统分选方法的核心特征            |
-| RF / CF    | Radio Frequency / Carrier Frequency，射频 / 载频                  | 用于区分固定频率或频率捷变雷达        |
-| PW         | Pulse Width，脉宽                                               | 可辅助区分不同波形参数的辐射源        |
-| PA / AMP   | Pulse Amplitude，脉冲幅度                                         | 可作为辅助特征，但容易受传播路径和接收机影响 |
-| DOA / AOA  | Direction / Angle of Arrival，到达方向 / 到达角                      | 若可获得，是很强的空间区分特征        |
+| 特征 | 含义 | 用途 |
+| --- | --- | --- |
+| TOA | 到达时间（Time of Arrival） | 用于计算 PRI 和分析时间规律 |
+| PRI / DTOA | 脉冲重复间隔 / 到达时间差 | 传统分选方法的核心特征 |
+| RF / CF | 射频 / 载频 | 用于区分固定频率或频率捷变雷达 |
+| PW | 脉宽 | 可辅助区分不同波形参数的辐射源 |
+| PA / AMP | 脉冲幅度 | 可作为辅助特征，但容易受传播路径和接收机影响 |
+| DOA / AOA | 到达方向 / 到达角 | 若可获得，是很强的空间区分特征 |
 
 ---
 
 ### 1.3 常见评价指标
 
-| Metric 指标    | Description 说明                                                |
-| ------------ | ------------------------------------------------------------- |
-| V-measure    | Homogeneity 和 completeness 的调和平均                              |
-| Homogeneity  | 每个预测簇中是否主要只包含同一真实辐射源的脉冲                                       |
-| Completeness | 同一真实辐射源的脉冲是否被完整分到同一预测簇中                                       |
-| ARI          | Adjusted Rand Index，调整兰德指数                                    |
-| AMI          | Adjusted Mutual Information，调整互信息                             |
-| Pairwise F1  | 将任意两个脉冲是否属于同一辐射源视为二分类问题后的 F1                                  |
-| MCC          | Matthews Correlation Coefficient，用于 pairwise matching 的相关系数指标 |
+| 指标 | 说明 |
+| --- | --- |
+| V-measure | 同质性和完整性的调和平均 |
+| Homogeneity | 每个预测簇中是否主要只包含同一真实辐射源的脉冲 |
+| Completeness | 同一真实辐射源的脉冲是否被完整分到同一预测簇中 |
+| ARI | 调整兰德指数（Adjusted Rand Index） |
+| AMI | 调整互信息（Adjusted Mutual Information） |
+| Pairwise F1 | 将任意两个脉冲是否属于同一辐射源视为二分类问题后的 F1 |
+| MCC | Matthews 相关系数，可用于成对匹配评价 |
 
 ---
 
-## 2. 方法分类与严格定义 / Method Taxonomy and Task Fit
+## 2. 方法分类与任务边界
 
-雷达脉冲分选方法大致可以分为 **传统 PRI-based 方法、无监督聚类方法、表征学习 + 聚类方法、监督序列标注与分割方法** 等几类。
+本节用于说明雷达脉冲分选中常见的技术路线，并区分不同方法与标准 **雷达脉冲分选 / 辐射源聚类** 定义之间的关系。方法分类并不等同于开源资源列表；后续资源表仅收录具有明确论文、数据或项目链接的内容。
 
-需要注意的是，不同论文或代码仓库虽然都会使用 `deinterleaving`、`sorting`、`pulse clustering` 等关键词，但它们的任务设定并不完全相同。有些方法是严格意义上的无监督聚类，有些方法则使用了监督标签、模板先验或深度学习序列标注。
+### 2.1 方法类型总览
 
----
+| 方法类型 | 任务匹配度 | 说明 |
+| --- | --- | --- |
+| 基于 PRI 的传统方法 | 高 | 主要利用 TOA / PRI 周期结构，如 PRI 直方图、CDIF、SDIF、PRI 变换等 |
+| 传统聚类方法 | 高 | K-means、GMM、DBSCAN、HDBSCAN、层次聚类等，可直接用于 PDW 特征聚类 |
+| 基于密度的聚类基线 | 高 | HDBSCAN / DBSCAN 适合未知簇数场景，是当前无监督分选实验中常用的基础对照 |
+| 度量学习 + 聚类 | 中到高 | 通过监督或弱监督方式学习脉冲嵌入表示，再在特征空间中聚类 |
+| 最优传输聚类 | 中到高 | 先进行过分割，再利用分布距离或最优传输距离进行簇合并 |
+| 对比学习 / 表征学习 | 中 | 通过对比学习、自编码器或表征学习提升特征可分性，具体任务设定需要结合论文判断 |
+| 序列标注 / 语义分割 | 中 | 将脉冲分选建模为序列标注或语义分割任务，通常依赖有标签训练数据 |
+| 雷达活动分割 | 相关任务 | 面向雷达活动检测或分割，不等同于标准 PDW 辐射源聚类 |
 
-### 2.1 传统 PRI-based 方法
+### 2.2 方法与严格无监督分选的关系
 
-这类方法主要依赖脉冲到达时间中的周期性或准周期性规律，通常以 TOA / DTOA / PRI 为核心特征。
-
-| Method 方法         | Main idea 核心思想                          | Advantages 优点   | Limitations 局限   |
-| ----------------- | --------------------------------------- | --------------- | ---------------- |
-| PRI histogram     | 使用直方图估计主要 PRI 值                         | 简单、可解释          | 对丢脉冲、假脉冲和密集环境敏感  |
-| CDIF              | Cumulative Difference Histogram，累积差值直方图 | 对稳定 PRI 模式有效    | 对复杂 PRI 调制的鲁棒性较弱 |
-| SDIF              | Sequential Difference Histogram，序列差值直方图 | 比普通直方图更好地利用时间顺序 | 仍受 PRI 捷变和噪声影响   |
-| PRI transform     | 对 TOA 序列进行变换以揭示 PRI 结构                  | 经典且研究较多         | 在高度交叠环境下性能下降     |
-| Sequence matching | 根据 PRI 模板匹配脉冲列                          | 适合已知模式的辐射源      | 需要先验知识或模板        |
-
-这类方法接近传统雷达信号分选定义，但通常依赖 PRI 规律或先验模板，不一定适用于复杂、密集、频率捷变的现代电磁环境。
-
----
-
-### 2.2 无监督聚类方法
-
-这类方法直接对 PDW 原始特征或变换后的特征进行聚类，是最符合“将混叠脉冲划分为不同辐射源簇”这一定义的方法类型。
-
-| Method 方法                    | Main idea 核心思想      | 是否严格无监督 | 备注                         |
-| ---------------------------- | ------------------- | ------- | -------------------------- |
-| K-means                      | 将脉冲聚为 K 个簇          | 是       | 需要预先给定或估计辐射源数量 K           |
-| GMM                          | 使用高斯混合模型建模脉冲分布      | 是       | 通常需要模型选择确定 K               |
-| DBSCAN                       | 基于密度聚类，并可处理噪声点      | 是       | 不需要预先设定 K，但参数敏感            |
-| HDBSCAN                      | 层次密度聚类              | 是       | 适合未知簇数和变密度场景，常作为强 baseline |
-| Hierarchical clustering      | 构建聚类树，再根据准则剪枝       | 是       | 剪枝准则会显著影响结果                |
-| Spectral clustering          | 基于图相似度进行聚类          | 是       | 图构建方式非常关键                  |
-| Sparse subspace clustering   | 假设同一辐射源脉冲位于某种子空间结构中 | 是       | 计算成本通常较高                   |
-| Optimal transport clustering | 基于分布距离进行聚类          | 是       | 对复杂 PDW 分布有潜力              |
-
-这一类方法最符合严格定义：**在不使用辐射源标签进行训练的情况下，将混叠脉冲划分为不同 emitter clusters。**
+| 方法类型 | 是否严格无监督 | 说明 |
+| --- | --- | --- |
+| DBSCAN / HDBSCAN | 是 | 不需要预设辐射源类别标签，适合未知辐射源数量场景 |
+| K-means / GMM | 是 | 属于无监督聚类，但通常需要预设或估计簇数 K |
+| 层次聚类 | 是 | 适合构建脉冲相似性层次结构，剪枝准则会影响结果 |
+| PRI 直方图 / CDIF / SDIF / PRI 变换 | 基本符合 | 传统模型驱动方法，适合 PRI 结构明显的脉冲序列 |
+| 最优传输聚类 | 基本符合 | 以无监督聚类和簇合并为主，适合复杂 PDW 分布建模 |
+| 度量学习 + 聚类 | 否 | 训练阶段通常使用标签，推理阶段可通过聚类输出辐射源分组 |
+| 对比学习 + 聚类 | 取决于具体设定 | 自监督设定可接近无监督分选，监督对比学习则不属于严格无监督方法 |
+| 语义分割 / 序列标注 | 否 | 通常依赖密集标签训练，属于监督式分选建模 |
+| 雷达活动分割 | 否 | 主要解决雷达活动检测或分割问题，不是标准辐射源聚类 |
 
 ---
 
-### 2.3 表征学习 + 聚类方法
-
-这类方法通常先学习一个更适合分选的特征表示，再在特征空间中进行聚类。
-
-| Method 方法                         | Main idea 核心思想                | Supervision level 监督程度 | 备注           |
-| --------------------------------- | ----------------------------- | ---------------------- | ------------ |
-| Autoencoder + clustering          | 学习压缩的 PDW embedding，再进行聚类     | 无监督或弱监督                | 适合特征重叠较强的场景  |
-| Contrastive learning + clustering | 将相似脉冲或相似序列在特征空间中拉近            | 自监督、弱监督或监督均可能          | 需要明确正负样本构造方式 |
-| Transformer encoder + HDBSCAN     | 学习具有上下文信息的脉冲 embedding，再聚类    | 常见为监督度量学习，也可设计为自监督     | 适合长序列建模      |
-| Triplet-loss metric learning      | 使同一辐射源脉冲的 embedding 更接近，不同源更远 | 训练阶段有监督，推理阶段聚类         | 不能简单归为纯无监督方法 |
-
-这类方法最终仍然输出辐射源簇，因此可以完成分选任务，但训练过程不一定是纯无监督的。
-
----
-
-### 2.4 监督序列标注与分割方法
-
-一些近期工作会将雷达脉冲分选建模为监督式序列标注、语义分割或实例分割任务。
-
-| Method 方法                     | Main idea 核心思想          | Comment 说明      |
-| ----------------------------- | ----------------------- | --------------- |
-| RNN / LSTM / GRU              | 建模脉冲序列中的时间依赖关系          | 通常需要有标签训练数据     |
-| TCN                           | 使用时间卷积进行长序列建模           | 对长序列较高效         |
-| Transformer                   | 建模脉冲之间的长距离依赖关系          | 表达能力强，但对数据量要求高  |
-| GCN                           | 构建脉冲关系图，对节点或边进行分类       | 适合建模脉冲间关系       |
-| U-Net / semantic segmentation | 将脉冲序列转换为类似图像的表示，再进行语义分割 | 需要密集标签          |
-| Mask R-CNN / SOLOv2           | 将不同辐射源视为图像中的不同实例        | 更接近实例分割，而不是传统聚类 |
-
-这些方法可以解决分选任务，但它们 **不严格属于无监督聚类式分选方法**。
-
----
-
-### 2.5 哪些方法符合严格分选定义？
-
-> **严格定义：** 给定混叠脉冲序列，在不使用辐射源标签进行训练的情况下，将脉冲聚类为若干组，每组对应一个辐射源。
-
-| Method Family 方法族                       | Matches the task? 是否符合分选任务 | Strictly unsupervised? 是否严格无监督 | Recommendation 推荐程度 | Comment 说明                     |
-| --------------------------------------- | -------------------------- | ------------------------------ | ------------------- | ------------------------------ |
-| DBSCAN / HDBSCAN                        | 是                          | 是                              | ⭐⭐⭐⭐⭐               | 适合未知 K，是当前最推荐的无监督聚类 baseline   |
-| K-means / GMM                           | 是                          | 是                              | ⭐⭐⭐⭐                | 方法简单、易复现，但通常需要 K 或模型选择         |
-| Hierarchical clustering                 | 是                          | 是                              | ⭐⭐⭐⭐                | 可解释性较好，但剪枝准则重要                 |
-| PRI histogram / CDIF / SDIF             | 是                          | 基本是                            | ⭐⭐⭐                 | 传统方法，适合 PRI 结构明显的场景            |
-| Autoencoder + clustering                | 是                          | 通常是                            | ⭐⭐⭐⭐                | 适合表征学习方向，需确认训练目标是否使用标签         |
-| Contrastive learning + clustering       | 是                          | 视情况而定                          | ⭐⭐⭐⭐                | 可设计为自监督，也可能是监督                 |
-| Transformer + triplet loss + clustering | 是                          | 否                              | ⭐⭐⭐                 | 可作为监督表征学习方法或上限对照               |
-| TCN / RNN sequence labeling             | 是                          | 否                              | ⭐⭐⭐                 | 通常属于监督学习                       |
-| GCN node/edge classification            | 是                          | 否 / 半监督                        | ⭐⭐⭐                 | 适合关系建模，但任务设定需仔细区分              |
-| U-Net / semantic segmentation           | 相关                         | 否                              | ⭐⭐                  | 需要密集标签，更接近分割任务                 |
-| Mask R-CNN / SOLOv2                     | 相关                         | 否                              | ⭐⭐                  | 属于实例分割式建模                      |
-| RadSeg-style activity segmentation      | 相关                         | 否                              | ⭐⭐                  | 检测雷达活动，不是标准 emitter clustering |
-
----
-
-## 3. 数据集资源 / Datasets
-
-本节主要整理雷达脉冲分选相关的数据集、仿真数据和相关任务数据。推荐程度主要根据 **任务匹配度、数据是否开源、是否包含 ground-truth labels、是否适合作为 benchmark、数据说明是否清晰** 等因素综合判断。
-
-> 说明：这里的星级是本仓库的整理推荐度，不代表 GitHub stars。
-
----
-
-
+## 3. 数据集与基准
 
 ### 3.1 数据集总览
 
-| Dataset 数据集                                | Task Fit 任务匹配度           | Data Type 数据类型                     | Labels 标签                     | Open Source? 是否开源 | Recommendation 推荐度 | Links 链接                                                                                                                                                                             | Notes 备注                     |
-| ------------------------------------------ | ------------------------ | ---------------------------------- | ----------------------------- | ----------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------- |
-| Turing Synthetic Radar Dataset, TSRD       | 标准 PDW 脉冲分选              | 合成 PDW 序列                          | 有 emitter ground-truth labels | 是                 | ⭐⭐⭐⭐⭐              | [Dataset](https://huggingface.co/datasets/alan-turing-institute/turing-synthetic-radar-dataset) / [GitHub](https://github.com/alan-turing-institute/turing-deinterleaving-challenge) | 当前最推荐作为主 benchmark           |
-| radar_data_Kmeans data                     | 雷达脉冲分选                   | 仿真 PDW / 项目数据                      | 仓库内数据说明有限                     | 部分，仓库内包含          | ⭐⭐⭐                | [GitHub](https://github.com/zda2019/radar_data_Kmeans)                                                                                                                               | 适合 K-means 工程实现和小型实验         |
-| Stream-ConAEnet data                       | 雷达脉冲分选                   | `.mat` 脉冲特征数据                      | 可能包含标签，但字段说明较少                | 部分，仓库内包含          | ⭐⭐⭐                | [GitHub](https://github.com/thebestdreamer/Radar-pulse-sorting-bases-on-Stream-ConAEnet)                                                                                             | 表征学习方向可参考，复现前需检查数据格式         |
-| HMC-RFN simulation data                    | PRI-based deinterleaving | 仿真 TOA / PRI 数据                    | 仿真生成标签                        | 代码可生成             | ⭐⭐⭐                | [GitHub](https://github.com/xm980426/HMC-RFN)                                                                                                                                        | 适合 PRI 时间结构建模实验              |
-| 2nd-EBDSC data                             | 竞赛式信号提取 / 分选             | PDW 序列                             | 训练 / 验证集有标签                   | 部分，通过网盘等方式提供      | ⭐⭐⭐                | [GitHub](https://github.com/framist/2nd-EBDSC)                                                                                                                                       | 更接近监督式或模板辅助任务                |
-| EW Signal Intelligence demo data           | 教学型分选 demo               | CSV 脉冲数据                           | Demo labels / tracks          | 是                 | ⭐⭐                 | [GitHub](https://github.com/hugodrak/deinterleaving_ew_signal_intelligence)                                                                                                          | 适合理解基本流程，不适合作为研究 benchmark   |
-| RadSeg                                     | 雷达活动分割                   | 信号序列 / sample-wise segmentation 数据 | 有 sample-wise annotations     | 是                 | ⭐⭐                 | [GitHub](https://github.com/abcxyzi/radseg)                                                                                                                                          | 相关任务，不是标准 emitter clustering |
-| Real measured radar deinterleaving dataset | 真实雷达分选                   | 真实 PDW / IQ                        | 通常不可获得                        | 公开资源很少            | ⭐                  | 暂无稳定公开 benchmark                                                                                                                                                                     | 真实数据难公开、难标注，目前不适合作为开源复现实验基础  |
+| 数据集 | 任务匹配度 | 数据类型 | 标签 | 是否开源 | 推荐度 | 备注 |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Turing Synthetic Radar Dataset / TSRD](https://huggingface.co/datasets/alan-turing-institute/turing-synthetic-radar-dataset) | 标准 PDW 脉冲分选 | 合成 PDW 脉冲序列 | 辐射源标签 | 是，需接受 Hugging Face 访问条件 | ⭐⭐⭐⭐⭐ | 当前最推荐作为主基准 |
+| [RadSeg](https://github.com/abcxyzi/radseg) | 相关任务：雷达活动分割 | 复基带 IQ 序列 + 逐采样点掩码 | 分割掩码 | 是 | ⭐⭐ | 正式数据集，但不是标准 PDW 辐射源聚类 |
 
 ---
 
-### 3.2 重点数据集说明
+### 3.2 Turing Synthetic Radar Dataset / TSRD
 
-#### 3.2.1 Turing Synthetic Radar Dataset / TSRD
+**推荐度：** ⭐⭐⭐⭐⭐  
+**任务：** 雷达脉冲分选 / PDW 辐射源聚类  
+**数据类型：** 合成 PDW 脉冲序列  
+**标签：** 辐射源标签  
+**项目：** [Turing Deinterleaving Challenge](https://github.com/alan-turing-institute/turing-deinterleaving-challenge)
 
-**推荐程度：** ⭐⭐⭐⭐⭐
-**适合用途：** 标准 benchmark、无监督聚类 baseline、深度表征学习、监督 / 半监督方法评估
-**数据类型：** 合成 PDW 序列
-**标签情况：** 提供 ground-truth emitter labels
-**相关代码：** Turing Deinterleaving Challenge
+TSRD 是目前最适合作为雷达脉冲分选主基准的公开数据集之一。它面向混叠雷达脉冲序列，提供 PDW 序列、辐射源标签、stare / scan 两种接收模式和配套评价框架。
 
-TSRD 是目前最适合作为雷达脉冲分选主 benchmark 的公开数据集。它与 Turing Deinterleaving Challenge 配套使用，提供了标准任务定义、数据加载方式、baseline 和评价协议。
+**推荐理由：**
 
-整理备注：如果目标是研究 **无监督雷达脉冲分选**，建议优先从该数据集开始，并使用 HDBSCAN、DBSCAN、K-means、hierarchical clustering 等方法建立 baseline。
+* 任务定义明确，直接面向雷达脉冲分选；
+* 数据规模较大，适合无监督、半监督和监督方法评估；
+* 提供真实辐射源标签，可计算 V-measure、ARI、AMI、同质性、完整性等指标；
+* 与 Turing Deinterleaving Challenge 配套，便于复现基线；
+* 适合作为新方法的主基准。
 
-**链接：** [Dataset](https://huggingface.co/datasets/alan-turing-institute/turing-synthetic-radar-dataset) / [GitHub](https://github.com/alan-turing-institute/turing-deinterleaving-challenge)
+**使用说明：**
 
----
-
-#### 3.2.2 radar_data_Kmeans data
-
-**推荐程度：** ⭐⭐⭐
-**适合用途：** K-means 分选入门、工程实现参考、嵌入式部署参考
-**数据类型：** 仿真 PDW / 项目数据
-**标签情况：** 数据和评价说明不如标准 benchmark 完整
-
-该项目包含 K-means 雷达脉冲分选相关的数据与仿真脚本，更适合用于理解传统聚类式分选和工程实现流程。
-
-整理备注：适合作为补充实验或工程参考，不建议单独作为论文主 benchmark。
-
-**链接：** [GitHub](https://github.com/zda2019/radar_data_Kmeans)
+* 数据为合成数据，不等同于真实雷达实测 PDW；
+* 数据集文件较大，下载和处理需要一定计算与存储资源；
+* 使用监督模型训练时，应明确区分其与严格无监督分选任务之间的差异。
 
 ---
 
-#### 3.2.3 Stream-ConAEnet data
+### 3.3 RadSeg
 
-**推荐程度：** ⭐⭐⭐
-**适合用途：** 对比自编码器、表征学习、流式分选实验
-**数据类型：** `.mat` 脉冲特征数据
-**标签情况：** 仓库中包含数据文件和模型权重，但字段含义和数据说明较有限
+**推荐度：** ⭐⭐  
+**任务：** 雷达脉冲活动分割  
+**数据类型：** 复基带 IQ 采样  
+**标签：** 逐通道分割掩码  
+**仓库：** [RadSeg](https://github.com/abcxyzi/radseg)
 
-该数据更适合用于研究深度表征学习与聚类结合的分选方法。由于数据说明不够完整，复现前需要先检查 `.mat` 文件字段含义和标签定义。
+RadSeg 是面向雷达活动检测与分割任务的数据集，提供 IQ 序列和逐采样点分割掩码。该数据集与雷达信号分析相关，但其任务目标不是标准的 PDW 辐射源聚类。
 
-**链接：** [GitHub](https://github.com/thebestdreamer/Radar-pulse-sorting-bases-on-Stream-ConAEnet)
+**保留原因：**
 
----
+* 数据集较正式，有论文支撑；
+* 数据和任务说明较完整；
+* 对基于原始 IQ 信号或分割建模的研究有参考价值。
 
-#### 3.2.4 2nd-EBDSC data
+**任务边界：**
 
-**推荐程度：** ⭐⭐⭐
-**适合用途：** 竞赛式混叠信号提取、监督序列标注、模板辅助任务
-**数据类型：** PDW 序列
-**标签情况：** 训练 / 验证数据包含标签，测试集情况依赖竞赛设置
-
-该数据与雷达脉冲分选相关，但不是严格的无监督 emitter clustering 数据集。它更适合研究有监督或模板辅助的混叠信号提取任务。
-
-**链接：** [GitHub](https://github.com/framist/2nd-EBDSC)
+* RadSeg 解决的是雷达脉冲活动分割，不是 PDW 辐射源聚类；
+* 标注形式是分割掩码，而不是辐射源级脉冲标签；
+* 不适合与 Turing TSRD 这类标准分选数据集直接对比。
 
 ---
 
-## 4. 开源方法与实现 / Methods and Implementations
+## 4. 代表性方法与论文
 
-本节主要整理雷达脉冲分选相关的开源方法、代码实现和可复现实验框架。推荐程度主要根据 **是否符合分选任务、是否开源、是否容易复现、是否适合作为 baseline、方法代表性** 等因素综合判断。
+本节整理具有明确论文出处的代表性方法。代码 / 项目列仅标注论文作者、数据集官方或任务官方提供的公开项目。
 
-> 说明：这里的星级是本仓库的整理推荐度，不代表 GitHub stars。
+其中，**Turing Synthetic Radar Dataset / Turing Deinterleaving Challenge** 同时具备论文、数据集、基线代码和评价框架，是当前最适合作为可复现实验起点的资源。因此，本节对该资源及其 HDBSCAN 基线单独展开说明。
 
----
+### 4.1 论文总览
 
-
-### 4.1 方法与代码总览
-
-| Project / Method 项目或方法                  | Method Type 方法类型                               | Supervision 监督方式 | Strictly Unsupervised? 是否严格无监督 | Recommendation 推荐度 | Links 链接                                                                                 | Notes 备注                         |
-| --------------------------------------- | ---------------------------------------------- | ---------------- | ------------------------------ | ------------------ | ---------------------------------------------------------------------------------------- | -------------------------------- |
-| Turing HDBSCAN baseline                 | HDBSCAN raw PDW clustering                     | 无监督              | 是                              | ⭐⭐⭐⭐⭐              | [GitHub](https://github.com/alan-turing-institute/turing-deinterleaving-challenge)       | 当前最推荐作为标准无监督 baseline            |
-| radar_data_Kmeans                       | K-means clustering / APG / ZYNQ deployment     | 无监督聚类            | 是，但需要 K                        | ⭐⭐⭐⭐               | [GitHub](https://github.com/zda2019/radar_data_Kmeans)                                   | 适合传统聚类与工程部署参考                    |
-| DBSCAN / HDBSCAN clustering             | Density-based clustering                       | 无监督              | 是                              | ⭐⭐⭐⭐⭐              | 可基于 Turing 框架自行实现                                                                        | 适合未知辐射源数量场景                      |
-| K-means / GMM / hierarchical clustering | Classical clustering baselines                 | 无监督              | 是                              | ⭐⭐⭐⭐               | 可基于 Turing 框架自行实现                                                                        | 适合作为基础 baseline 组合               |
-| Stream-ConAEnet                         | Contrastive autoencoder / streaming learning   | 无监督 / 弱监督情况需核实   | 部分符合                           | ⭐⭐⭐                | [GitHub](https://github.com/thebestdreamer/Radar-pulse-sorting-bases-on-Stream-ConAEnet) | 表征学习方向有参考价值，但数据说明有限              |
-| HMC-RFN                                 | Hidden Markov Chains / Residual Fence Networks | 模型驱动 / 先验驱动      | 否                              | ⭐⭐⭐                | [GitHub](https://github.com/xm980426/HMC-RFN)                                            | 适合 PRI-based 时间结构建模              |
-| 2nd-EBDSC solution                      | Wide-value embeddings / TCN / masking          | 监督 / 模板辅助        | 否                              | ⭐⭐⭐                | [GitHub](https://github.com/framist/2nd-EBDSC)                                           | 工程参考价值较高，但不是严格无监督聚类              |
-| EW Signal Intelligence Demo             | PRI-based and feature-based grouping           | 基本无监督 / demo     | 基本符合                           | ⭐⭐                 | [GitHub](https://github.com/hugodrak/deinterleaving_ew_signal_intelligence)              | 教学和快速原型参考                        |
-| RadSeg-style segmentation               | Radar activity segmentation                    | 监督分割             | 否                              | ⭐⭐                 | [GitHub](https://github.com/abcxyzi/radseg)                                              | 相关任务，不是标准 PDW emitter clustering |
-
----
-
-### 4.2 重点方法说明
-
-#### 4.2.1 Turing HDBSCAN baseline
-
-**推荐程度：** ⭐⭐⭐⭐⭐
-**方法类型：** HDBSCAN on raw PDW features
-**监督方式：** 无监督
-**是否严格符合分选定义：** 是
-**适合用途：** 标准 baseline、无监督聚类方法对比、后续深度表征学习方法的对照
-
-Turing Deinterleaving Challenge 中的 HDBSCAN baseline 是目前最适合作为开源雷达脉冲分选 baseline 的方法之一。它不需要预设辐射源数量，能够直接在 PDW 特征空间中进行聚类。
-
-整理备注：如果要搭建一个无监督分选实验框架，建议首先复现该 baseline，然后再加入 DBSCAN、K-means、GMM、hierarchical clustering 等对比方法。
-
-**链接：** [GitHub](https://github.com/alan-turing-institute/turing-deinterleaving-challenge)
+| 方法 / 方向 | 代表论文 | 论文链接 | 代码 / 项目 | 任务匹配度 | 说明 |
+| --- | --- | --- | --- | --- | --- |
+| 基准 / 数据集 | The Turing Synthetic Radar Dataset: A Dataset for Pulse Deinterleaving | [arXiv](https://arxiv.org/abs/2602.03856) / [Dataset](https://huggingface.co/datasets/alan-turing-institute/turing-synthetic-radar-dataset) | [GitHub](https://github.com/alan-turing-institute/turing-deinterleaving-challenge) | 高 | 提供数据、标签、评价指标与官方基线，适合作为主基准 |
+| HDBSCAN 基线 | Turing Deinterleaving Challenge baseline | [Project](https://github.com/alan-turing-institute/turing-deinterleaving-challenge) | [GitHub](https://github.com/alan-turing-institute/turing-deinterleaving-challenge) | 高 | 官方可复现无监督基线，直接基于 PDW 特征进行密度聚类 |
+| Transformer 度量学习 | Radar Pulse Deinterleaving with Transformer Based Deep Metric Learning | [arXiv](https://arxiv.org/abs/2503.13476) | 仅有论文，无开源代码 | 高 | 使用 Transformer + triplet loss 学习脉冲嵌入，推理阶段用于辐射源聚类 |
+| 最优传输聚类 | Deinterleaving RADAR Emitters with Optimal Transport Distances | [arXiv](https://arxiv.org/abs/2312.11178) | 仅有论文，无开源代码 | 高 | 无监督聚类 + 最优传输距离簇合并，适合复杂 PDW 分布下的辐射源分选 |
+| 更新过程混合模型 | Deinterleaving of Mixtures of Renewal Processes | [DOI](https://doi.org/10.1109/TSP.2018.2886149) | 仅有论文，无开源代码 | 中到高 | 从随机过程混合模型角度建模脉冲序列分选 |
+| 离散更新过程混合模型 | Deinterleaving of Discrete Renewal Process Mixtures with Application to Electronic Support Measures | [arXiv](https://arxiv.org/abs/2402.09166) / [DOI](https://doi.org/10.1109/TSP.2024.3464753) | 仅有论文，无开源代码 | 中到高 | 面向电子支援场景的离散更新马尔可夫链分选方法 |
+| 深度对比聚类 | Deep Contrastive Clustering for Signal Deinterleaving | [DOI](https://doi.org/10.1109/TAES.2023.3322971) | 仅有论文，无开源代码 | 中到高 | 支撑对比学习 + 聚类方向 |
+| 语义分割式分选 | A Radar Signal Deinterleaving Method Based on Semantic Segmentation with Neural Network | [arXiv](https://arxiv.org/abs/2110.13706) / [DOI](https://doi.org/10.1109/TSP.2022.3229630) | 仅有论文，无开源代码 | 中 | 将分选建模为序列语义标注 / 分割任务，通常需要标签训练 |
+| 图像分割式分选 | Image Segmentation for Radar Signal Deinterleaving Using Deep Learning | [DOI](https://doi.org/10.1109/TAES.2022.3188225) | 仅有论文，无开源代码 | 中 | 将雷达脉冲序列转换为图像表示，再使用图像分割方式完成分选 |
+| Sep-RefineNet | Sep-RefineNet: A Deinterleaving Method for Radar Signals Based on Semantic Segmentation | [Paper](https://www.mdpi.com/2076-3417/13/4/2726) | 仅有论文，无开源代码 | 中 | 构造频率特征矩阵，通过语义分割网络完成脉冲流位置解码 |
+| Deep ToA mask | Deep ToA Mask-Based Recursive Radar Pulse Deinterleaving | [DOI](https://doi.org/10.1109/TAES.2022.3193948) | 仅有论文，无开源代码 | 中到高 | 使用 ToA 掩码和递归方式逐步分离混叠脉冲序列 |
+| GCN 半监督分选 | Radar Signal Sorting via Graph Convolutional Network and Semi-Supervised Learning | [DOI](https://doi.org/10.1109/LSP.2024.3519884) | 仅有论文，无开源代码 | 中 | 半监督图学习式雷达信号分选，不属于严格无监督聚类 |
 
 ---
 
-#### 4.2.2 radar_data_Kmeans
+### 4.2 方法简介
 
-**推荐程度：** ⭐⭐⭐⭐
-**方法类型：** K-means clustering
-**监督方式：** 无监督聚类
-**是否严格符合分选定义：** 基本符合，但需要给定或估计 K
-**适合用途：** 传统聚类分选入门、工程实现、嵌入式部署参考
+#### 4.2.1 Turing Synthetic Radar Dataset / Turing Deinterleaving Challenge
 
-该项目使用 K-means 聚类实现雷达脉冲分选，并包含 APG 优化、C++ 实现和 ZYNQ 部署相关内容。相比纯研究代码，它更偏工程实现。
+Turing Synthetic Radar Dataset / TSRD 是当前最适合作为雷达脉冲分选主基准的公开数据集之一。该数据集以 PDW 脉冲序列为基本输入，提供辐射源标签，可用于评估算法是否能够把混叠脉冲流重新划分为不同辐射源对应的脉冲簇。
 
-整理备注：适合用来理解聚类式分选的基本流程，但由于 K-means 需要辐射源数量 K，在真实未知场景中需要配合 K 估计或模型选择方法。
+与一般只提供数据文件的资源不同，Turing Deinterleaving Challenge 同时提供了数据使用说明、评价流程和 HDBSCAN 基线，因此更适合作为可复现实验平台。对于新方法，可以在同一数据划分、同一评价协议和同一指标体系下，与官方基线或自实现聚类方法进行比较。
 
-**链接：** [GitHub](https://github.com/zda2019/radar_data_Kmeans)
+**可复现实验价值：**
 
----
+* 数据集、任务定义和评价指标相对完整；
+* 提供 stare / scan 等不同接收模式，便于测试算法在不同观测条件下的稳定性；
+* 提供辐射源标签，可计算 V-measure、ARI、AMI、同质性、完整性、Pairwise F1 等聚类指标；
+* 官方项目包含 HDBSCAN 基线，可作为无监督方法的复现起点；
+* 适合扩展 DBSCAN、K-means、GMM、层次聚类、表征学习 + 聚类等方法。
 
-#### 4.2.3 Stream-ConAEnet
+**建议使用方式：**
 
-**推荐程度：** ⭐⭐⭐
-**方法类型：** Contrastive autoencoder + streaming learning
-**监督方式：** 包含无监督、弱监督或带标签训练阶段
-**是否严格符合分选定义：** 部分符合
-**适合用途：** 表征学习、流式分选、深度聚类方向参考
+1. 先复现 Turing Challenge 中的 HDBSCAN 基线，确认数据读取、标准化、聚类和评价流程正确；
+2. 再加入 DBSCAN、K-means、GMM、层次聚类等基础聚类方法，建立自己的基线表；
+3. 若研究深度表征学习，可在 PDW 嵌入表示上继续使用 HDBSCAN 或层次聚类进行簇划分；
+4. 汇报结果时应同时给出接收模式、输入特征、是否使用标签训练、是否预设辐射源数量以及主要聚类指标。
 
-该项目使用对比自编码器学习脉冲特征表示，再结合聚类或动态中心模块进行分选。它适合用来参考“深度表征学习 + 聚类”的思路。
+#### 4.2.2 HDBSCAN 基线
 
-整理备注：该项目有一定参考价值，但数据说明和训练细节需要仔细核查，不建议直接将其作为严格无监督方法引用。
+HDBSCAN 是 Turing Deinterleaving Challenge 中提供的主要无监督基线。它直接在 PDW 特征空间中进行密度聚类，不需要预先指定辐射源数量，因此与“未知辐射源数量下的无监督分选”任务设定较为一致。
 
-**链接：** [GitHub](https://github.com/thebestdreamer/Radar-pulse-sorting-bases-on-Stream-ConAEnet)
+相比 K-means 和 GMM，HDBSCAN 的优势在于不需要提前给定簇数，并且能够将低密度或不稳定样本识别为噪声点；相比普通 DBSCAN，HDBSCAN 对不同密度簇的适应性更强。对于雷达脉冲分选任务，这一点比较重要，因为不同辐射源的脉冲数量、参数分布和局部密度可能存在较大差异。
 
----
+**复现和扩展建议：**
 
-#### 4.2.4 HMC-RFN
+* 直接使用原始 PDW 特征时，应先进行特征标准化，避免 TOA、RF、PW、PA 等量纲差异影响距离度量；
+* 对比实验中可加入 DBSCAN、K-means、GMM 和层次聚类，区分“未知簇数方法”和“需要给定 K 的方法”；
+* 若使用深度模型学习嵌入表示，建议仍保留 HDBSCAN 作为统一聚类后端，便于判断性能提升来自表征学习还是聚类器本身；
+* 汇报 HDBSCAN 结果时，应记录关键超参数和噪声点比例，并使用与 Turing Challenge 一致的评价指标。
 
-**推荐程度：** ⭐⭐⭐
-**方法类型：** PRI-based temporal modeling
-**监督方式：** 模型驱动 / 先验驱动
-**是否严格符合分选定义：** 不属于纯无监督聚类
-**适合用途：** PRI 结构建模、仿真实验、传统时序模型对比
+#### 4.2.3 Transformer 度量学习
 
-HMC-RFN 使用 Hidden Markov Chains 和 Residual Fence Networks 来建模雷达脉冲分选中的时间结构。它不是纯粹的数据驱动聚类方法，而是更依赖 PRI 模式和先验建模。
+“Radar Pulse Deinterleaving with Transformer Based Deep Metric Learning” 将雷达脉冲分选定义为将混叠脉冲序列按辐射源分离的问题，并强调单个脉冲序列中的辐射源数量未知。该方法使用 Transformer 编码 PDW 序列，并通过 triplet loss 学习脉冲嵌入表示，使同一辐射源的脉冲在特征空间中更接近，不同辐射源的脉冲更远。该方向适合作为监督度量学习 + 聚类的代表方法。
 
-**链接：** [GitHub](https://github.com/xm980426/HMC-RFN)
+#### 4.2.4 最优传输聚类
 
----
+“Deinterleaving RADAR Emitters with Optimal Transport Distances” 提出一种无监督分选方法。其基本思想是先对脉冲进行过分割，降低不同辐射源被错误合并的风险；随后考虑复杂辐射源可能对应多个簇，使用基于最优传输距离的层次聚类进行簇合并。该方法适合支撑“无监督聚类 + 簇合并”的方法方向。
 
-#### 4.2.5 2nd-EBDSC solution
+#### 4.2.5 更新过程混合模型方法
 
-**推荐程度：** ⭐⭐⭐
-**方法类型：** Wide-value embeddings + TCN + masking
-**监督方式：** 监督 / 模板辅助
-**是否严格符合分选定义：** 否
-**适合用途：** 序列建模、竞赛式信号提取、工程参考
+“Deinterleaving of Mixtures of Renewal Processes” 和 “Deinterleaving of Discrete Renewal Process Mixtures with Application to Electronic Support Measures” 都从随机过程混合模型角度处理分选问题。这类方法不是简单在 PDW 空间做聚类，而是利用脉冲到达时间、符号序列和更新过程 / 马尔可夫链结构对混叠脉冲序列进行建模。它们适合作为统计建模类方法参考。
 
-该项目与混叠脉冲序列处理相关，但更接近监督式或模板辅助的信号提取任务，而不是严格意义上的无监督 emitter clustering。
+#### 4.2.6 深度对比聚类
 
-整理备注：适合作为工程实现和深度序列建模参考，但在 README 中需要明确标注其任务设定与标准无监督分选不同。
+“Deep Contrastive Clustering for Signal Deinterleaving” 是对比学习 + 聚类方向的代表论文。该方向的核心思想是通过对比学习增强信号或脉冲表示的可分性，再利用聚类或伪标签机制完成分选。该方法适合放在深度表征学习式分选方法中，而不是开源框架或基准部分。
 
-**链接：** [GitHub](https://github.com/framist/2nd-EBDSC)
+#### 4.2.7 语义分割式分选
 
----
+“A Radar Signal Deinterleaving Method Based on Semantic Segmentation with Neural Network” 将分选任务转换为语义分割 / 序列标注问题。其输入主要围绕 DTOA 等时间差序列，通过神经网络为脉冲流中的脉冲赋予语义标签，从而完成分选。该类方法适合复杂 PRI 调制环境，但通常依赖有标签训练数据，因此不属于严格无监督聚类式分选。
 
-#### 4.2.6 EW Signal Intelligence Deinterleaving Demo
+#### 4.2.8 图像分割式分选
 
-**推荐程度：** ⭐⭐
-**方法类型：** PRI-based / feature-based grouping
-**监督方式：** 基本无监督 / demo
-**是否严格符合分选定义：** 概念上基本符合
-**适合用途：** 教学、快速原型、理解基本分选流程
+“Image Segmentation for Radar Signal Deinterleaving Using Deep Learning” 将雷达脉冲序列变换为图像化表示，再使用深度图像分割模型完成信号分选。它的价值在于把脉冲分选从传统 PRI 搜索问题转化为二维图像分割问题，但任务设定和输入表示不同于直接 PDW 聚类。
 
-该项目提供了简单的 Python demo，适合用来理解 deinterleaving 的基本流程，但不适合作为研究级 benchmark。
+#### 4.2.9 Sep-RefineNet
 
-**链接：** [GitHub](https://github.com/hugodrak/deinterleaving_ew_signal_intelligence)
+Sep-RefineNet 是语义分割式分选方法。它通过构造频率特征矩阵来表示不同雷达信号脉冲流的语义结构，再使用 Sep-RefineNet 对矩阵进行像素级分割，最后通过位置解码和验证还原原始脉冲流中的脉冲位置。该方法适合放在分割式分选方法中，而不应归为无监督聚类基线。
+
+#### 4.2.10 Deep ToA mask 递归分选
+
+“Deep ToA Mask-Based Recursive Radar Pulse Deinterleaving” 使用 ToA 掩码和递归分离思想处理混叠雷达脉冲序列。它更强调从到达时间结构中逐步提取不同辐射源对应的脉冲子序列，适合放在深度递归分选 / 基于掩码的分选类别中。
+
+#### 4.2.11 GCN 半监督雷达信号分选
+
+“Radar Signal Sorting via Graph Convolutional Network and Semi-Supervised Learning” 使用图卷积网络和半监督学习建模雷达信号分选问题。该方向适合描述脉冲之间关系图、伪标签和半监督学习在信号分选中的应用，但它不是严格无监督 PDW 辐射源聚类方法。
 
 ---
 
-#### 4.2.7 RadSeg
+## 5. 推荐实验设置
 
-**推荐程度：** ⭐⭐
-**方法类型：** Radar activity segmentation
-**监督方式：** 监督分割
-**是否严格符合分选定义：** 否
-**适合用途：** 相关任务参考、雷达活动检测与分割
+如果研究目标是 **无监督雷达脉冲分选**，建议以 TSRD 和 Turing Deinterleaving Challenge 为主实验平台，并围绕 HDBSCAN 基线构建可复现对比。
 
-RadSeg 关注的是雷达活动的 sample-wise segmentation，不是标准的 PDW emitter clustering。它可以作为相关任务参考，但不应与标准雷达脉冲分选数据集混为一类。
+### 5.1 主基准
 
-**链接：** [GitHub](https://github.com/abcxyzi/radseg)
+建议将 **Turing Synthetic Radar Dataset / TSRD** 作为主要基准。该数据集提供 PDW 脉冲序列、辐射源标签和配套评价流程，适合比较传统聚类、表征学习和监督式上限模型。
 
----
+实验设置中建议明确以下内容：
 
-## 5. 推荐实验设置 / Recommended Experimental Setup
+* 使用的接收模式，例如 stare 或 scan；
+* 输入特征集合，例如 TOA、CF/RF、PW、PA、AoA；
+* 是否使用辐射源标签参与训练；
+* 是否预设辐射源数量 K；
+* 聚类方法、距离度量和主要超参数；
+* 是否对 TOA、RF、PW、PA 等特征进行标准化或变换。
 
-如果研究目标是 **无监督雷达脉冲分选（unsupervised radar pulse deinterleaving）**，建议采用以下实验设置。
+### 5.2 建议基线
 
----
-
-### 5.1 主 benchmark
-
-建议将 **Turing Synthetic Radar Dataset** 作为主要 benchmark，因为它具备：
-
-* 清晰的任务定义；
-* 开源数据；
-* ground-truth emitter labels；
-* 标准聚类评价指标；
-* 基线代码；
-* 支持未知辐射源数量的实验设置。
-
----
-
-### 5.2 基线方法
-
-建议实现并比较以下 baseline：
-
-| Category 类别             | Methods 方法                                                    |
-| ----------------------- | ------------------------------------------------------------- |
-| Raw-feature clustering  | K-means，GMM，DBSCAN，HDBSCAN，hierarchical clustering            |
-| PRI-based methods       | PRI histogram，CDIF，SDIF，PRI transform                         |
-| Hybrid methods          | RF/PW/DOA 粗聚类 + PRI refinement                                |
-| Representation learning | Autoencoder + HDBSCAN，contrastive encoder + clustering        |
-| Supervised upper bound  | Transformer metric learning，TCN，GCN，segmentation-based models |
-
----
+| 类别 | 方法 | 用途 |
+| --- | --- | --- |
+| 官方基线 | HDBSCAN | 复现 Turing Challenge 的基础结果 |
+| 原始特征聚类 | DBSCAN，K-means，GMM，层次聚类 | 评估传统聚类方法在原始 PDW 特征上的表现 |
+| 基于 PRI 的方法 | PRI 直方图，CDIF，SDIF，PRI 变换 | 对比传统时间结构分选方法 |
+| 混合方法 | RF/PW/DOA 粗聚类 + PRI 精细分选 | 验证多特征粗分组与 PRI 精细分选的组合效果 |
+| 表征学习 | 自编码器 / 对比编码器 + HDBSCAN | 评估学习型嵌入表示是否提升聚类可分性 |
+| 监督式上限 | Transformer 度量学习，GCN，TCN，序列标注模型 | 作为监督或半监督方法的性能参考 |
 
 ### 5.3 建议流程
 
 ```text
-Raw PDW sequence
+原始 PDW 序列
       ↓
-Feature normalization
+特征选择与标准化
       ↓
-Optional temporal feature construction
+可选的时序特征构造
       ↓
-Unsupervised clustering or representation learning
+聚类或表征学习
       ↓
-Cluster label assignment
+簇标签分配
       ↓
-Evaluation using V-measure / ARI / AMI / pairwise F1
+使用 V-measure / ARI / AMI / Pairwise F1 进行评价
 ```
 
----
-
-
-## 6. 推荐阅读与入门资源 / Recommended Reading and Starting Points
-
-### 标准分选任务的最佳起点
-
-* [Turing Deinterleaving Challenge](https://github.com/alan-turing-institute/turing-deinterleaving-challenge)
-* [Turing Synthetic Radar Dataset](https://huggingface.co/datasets/alan-turing-institute/turing-synthetic-radar-dataset)
-
-### 简单无监督聚类方法的最佳起点
-
-* [radar_data_Kmeans](https://github.com/zda2019/radar_data_Kmeans)
-* Turing Deinterleaving Challenge 中的 HDBSCAN baseline
-
-### 表征学习方向的起点
-
-* [Radar Pulse Sorting Based on Stream-ConAEnet](https://github.com/thebestdreamer/Radar-pulse-sorting-bases-on-Stream-ConAEnet)
-
-### PRI-based 时间建模方向的起点
-
-* [HMC-RFN](https://github.com/xm980426/HMC-RFN)
-
-### 相关但不严格属于分选的任务
-
-* [2nd-EBDSC](https://github.com/framist/2nd-EBDSC)
-* [RadSeg](https://github.com/abcxyzi/radseg)
+对于无监督方法，建议首先完成 `原始 PDW 特征 + HDBSCAN` 的复现，再逐步加入新的特征构造、聚类策略或表征学习模块。这样可以避免直接比较复杂模型时无法判断性能提升来源。
 
 ---
 
-## 7. 说明 / Notes
+## 6. 非核心资源说明
 
-* 与通用 RF modulation recognition 或 RF fingerprinting 相比，雷达脉冲分选方向的开源资源仍然较少；
-* 大多数公开数据集是合成数据，因为真实雷达 PDW 或 IQ 数据很难公开，也很难获得可靠 ground truth；
+为保证本资源列表质量，以下资源不纳入核心推荐。部分资源可能与雷达信号处理相关，但由于任务不匹配、文档不足、复现价值有限或项目质量不适合作为正式研究资源，因此不放入主表。
+
+| 资源 | 处理方式 | 原因 |
+| --- | --- | --- |
+| Stream-ConAEnet | 不纳入正文推荐 | 项目说明中明确属于本科毕设内容，数据说明、运行流程、评价协议和论文支撑不足 |
+| EW Signal Intelligence Deinterleaving Demo | 不纳入正文推荐 | 教学型小 demo，适合理解概念，但不适合作为研究级基准或代表性方法 |
+| radar_data_Kmeans | 不纳入核心资源 | 与雷达分选相关，但文档、评价协议和数据说明较弱，可作为工程实现线索 |
+| HMC-RFN GitHub repository | 不纳入核心资源 | 有 MATLAB 代码，但 README 和复现说明较少，可作为论文配套代码线索 |
+| 2nd-EBDSC repository | 不纳入核心资源 | 工程内容较完整，但任务更接近竞赛式监督序列建模或模板辅助信号提取，不是标准无监督 PDW 辐射源聚类 |
+
+---
+
+## 7. 说明
+
+* 与通用 RF modulation recognition 或 RF fingerprinting 相比，雷达脉冲分选方向的高质量开源资源仍然较少；
+* 大多数公开数据集是合成数据，因为真实雷达 PDW 或 IQ 数据很难公开，也很难获得可靠真值标签；
 * 报告实验结果时，应明确说明方法属于无监督、监督、半监督，还是“监督表征学习后再聚类”；
-* 如果研究目标是严格的无监督雷达脉冲分选，Turing TSRD + HDBSCAN / DBSCAN / K-means / hierarchical clustering 是最透明、最容易复现的起点；
-* 本仓库中的推荐程度会随着项目更新、数据开放情况和复现记录变化而调整。
+* 如果研究目标是严格的无监督雷达脉冲分选，TSRD + HDBSCAN / DBSCAN / K-means / 层次聚类是当前最透明、最容易复现的起点；
+* 本仓库中的星级是整理者基于任务匹配度、资源质量、复现价值和数据说明完整度给出的主观评价，不代表 GitHub stars。
 
 ---
 
-## 8. 引用与贡献 / Citation and Contribution
+## 8. 引用与贡献
 
-本资源列表由 **厦门大学信息学院 SMARTDSP 实验室** 整理与维护，旨在汇总雷达脉冲分选（Radar Pulse Deinterleaving / Radar Signal Sorting）相关的公开数据集、开源代码、代表性方法和可复现实验资源。
+本资源列表由 **厦门大学信息学院 SmartDSP 实验室** 整理与维护，旨在为雷达脉冲分选、雷达信号分选、PDW 数据处理以及相关电磁信号智能处理研究提供一个相对系统、可复现、便于扩展的开源资源索引。
 
-如果本仓库对你的学习、研究或项目开发有帮助，欢迎在论文、报告或项目文档中引用本仓库，并请同时引用相关方法、数据集和代码仓库的原始论文或项目页面。
+如果本仓库对你的研究或项目有帮助，欢迎在论文、报告或项目中引用本资源列表，并尽量同时引用对应的原始论文、数据集和代码仓库。
 
-### 维护说明
+### 引用格式
 
-- 本仓库主要关注雷达脉冲分选、PDW deinterleaving、radar signal sorting 及其相关任务；
-- 资源整理过程中会尽量标注任务类型、数据可用性、监督方式和是否符合严格无监督分选定义；
-- 由于部分开源项目的数据说明、许可证、复现流程可能不完整，相关判断会随着项目更新持续修正；
-- 本仓库中的推荐程度仅代表整理者基于任务匹配度、开源程度、复现价值和数据说明完整度给出的参考意见。
+如果你使用了本仓库整理的资源列表，可以采用如下方式引用：
+
+```bibtex
+@misc{smartdsp_radar_deinterleaving_resources,
+  title        = {Radar Pulse Deinterleaving Resources},
+  author       = {SmartDSP Lab, School of Informatics, Xiamen University},
+  year         = {2026},
+  howpublished = {\url{https://github.com/your-repository-url}},
+  note         = {A curated resource list for radar pulse deinterleaving and radar signal sorting}
+}
+```
+
+其中 `https://github.com/your-repository-url` 请替换为本仓库的实际 GitHub 地址。
 
 ### 贡献方式
 
-欢迎通过 Issue 或 Pull Request 补充和修正资源，包括但不限于：
+欢迎研究者和开发者通过 issue 或 pull request 的方式补充和修正本仓库内容。可以贡献的内容包括但不限于：
 
-- 新发布的雷达脉冲分选数据集；
-- PRI-based、clustering-based 或 deep learning-based 分选方法的开源实现；
-- 可复现的 benchmark 结果；
-- 数据集可用性、链接失效或许可证信息的修正；
-- 关于某个方法是否严格无监督的补充说明。
+* 新发布的雷达脉冲分选数据集；
+* 基于 PRI、聚类或深度学习的分选方法开源实现；
+* 可复现的基准结果；
+* 公开论文、代码和数据集链接；
+* 对已有资源的数据可用性、任务定义或推荐程度的修正；
+* 关于某个方法是否严格符合无监督雷达脉冲分选定义的补充说明。
 
-建议提交资源时尽量包含以下信息：
+在贡献新资源时，建议尽量说明以下信息：
 
 ```text
-项目名称：
-项目链接：
+资源名称：
+资源链接：
 任务类型：
 方法类型：
 是否开源代码：
@@ -568,4 +432,6 @@ Evaluation using V-measure / ARI / AMI / pairwise F1
 是否严格无监督：
 推荐理由：
 备注：
+```
 
+本仓库将持续更新雷达脉冲分选相关公开资源，也欢迎相关方向的研究者共同完善。
