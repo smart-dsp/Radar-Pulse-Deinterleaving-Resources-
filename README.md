@@ -368,11 +368,12 @@ Sep-RefineNet 是语义分割式分选方法。它通过构造频率特征矩阵
 
 | 资源 | 处理方式 | 原因 |
 | --- | --- | --- |
-| Stream-ConAEnet | 不纳入正文推荐 | 项目说明中明确属于本科毕设内容，数据说明、运行流程、评价协议和论文支撑不足 |
-| EW Signal Intelligence Deinterleaving Demo | 不纳入正文推荐 | 教学型小 demo，适合理解概念，但不适合作为研究级基准或代表性方法 |
-| radar_data_Kmeans | 不纳入核心资源 | 与雷达分选相关，但文档、评价协议和数据说明较弱，可作为工程实现线索 |
-| HMC-RFN GitHub repository | 不纳入核心资源 | 有 MATLAB 代码，但 README 和复现说明较少，可作为论文配套代码线索 |
-| 2nd-EBDSC repository | 不纳入核心资源 | 工程内容较完整，但任务更接近竞赛式监督序列建模或模板辅助信号提取，不是标准无监督 PDW 辐射源聚类 |
+| [Stream-ConAEnet](https://github.com/thebestdreamer/Radar-pulse-sorting-bases-on-Stream-ConAEnet) | 不纳入正文推荐 | 项目说明中明确属于本科毕设内容，数据说明、运行流程、评价协议和论文支撑不足 |
+| [EW Signal Intelligence Deinterleaving Demo](https://github.com/hugodrak/deinterleaving_ew_signal_intelligence) | 不纳入正文推荐 | 教学型小 demo，适合理解概念，但不适合作为研究级基准或代表性方法 |
+| [radar_data_Kmeans](https://github.com/zda2019/radar_data_Kmeans) | 不纳入核心资源 | 与雷达分选相关，但文档、评价协议和数据说明较弱，可作为工程实现线索 |
+| [HMC-RFN GitHub repository](https://github.com/xm980426/HMC-RFN) | 不纳入核心资源 | 有 MATLAB 代码，但 README 和复现说明较少，可作为论文配套代码线索 |
+| [2nd-EBDSC repository](https://github.com/framist/2nd-EBDSC) | 不纳入核心资源 | 工程内容较完整，但任务更接近竞赛式监督序列建模或模板辅助信号提取，不是标准无监督 PDW 辐射源聚类 |
+|
 
 ---
 
